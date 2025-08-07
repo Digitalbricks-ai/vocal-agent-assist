@@ -19,10 +19,14 @@ export const Navigation = () => {
     <nav className="bg-card border-r border-border h-screen w-64 fixed left-0 top-0 z-50">
       <div className="p-6">
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Home className="w-4 h-4 text-primary-foreground" />
-          </div>
-          <h1 className="font-bold text-xl text-foreground">RealEstate Pro</h1>
+          <img
+            src="/lovable-uploads/3f36d35d-d547-4e2d-89a9-aa62954b3801.png"
+            alt="RobinRocks logo"
+            className="h-8 w-auto"
+            loading="eager"
+            decoding="async"
+          />
+          <h1 className="font-bold text-xl text-foreground">RobinRocks</h1>
         </div>
         
         <ul className="space-y-2">
