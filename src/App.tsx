@@ -8,6 +8,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Recording } from "./pages/Recording";
 import { Reports } from "./pages/Reports";
 import { PropertyComparisons } from "./pages/PropertyComparisons";
+import { CompetitorAnalysis } from "./pages/CompetitorAnalysis";
 import { Tasks } from "./pages/Tasks";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/recording" element={<Recording />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/comparisons" element={<PropertyComparisons />} />
+            <Route path="/competitor-analysis" element={<CompetitorAnalysis />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
