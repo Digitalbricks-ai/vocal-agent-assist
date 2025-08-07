@@ -23,7 +23,7 @@ export const AIChat = ({ customerPreferences, selectedProperties, onPreferencesU
     {
       id: '1',
       type: 'ai',
-      content: 'Hello! I\'m your property comparison AI. I can help you analyze properties based on size, environmental benefits, and provide selling advice. What are you looking for in a property?',
+      content: 'Hello! I\'m your commercial property AI advisor. I specialize in analyzing business properties based on ROI, location benefits, operational costs, and growth potential. What type of commercial space are you looking for?',
       timestamp: new Date()
     }
   ]);
@@ -40,29 +40,37 @@ export const AIChat = ({ customerPreferences, selectedProperties, onPreferencesU
   const simulateAIResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
     
-    if (lowerMessage.includes('environmental') || lowerMessage.includes('green') || lowerMessage.includes('sustainable')) {
-      return `Based on your interest in environmental features, I recommend focusing on properties with high environmental scores. Property 123 Ocean View Drive has a 92% environmental score with solar panels and smart systems. Would you like me to compare the environmental benefits of the selected properties?`;
+    if (lowerMessage.includes('roi') || lowerMessage.includes('return') || lowerMessage.includes('investment')) {
+      return `Based on ROI analysis, the Industrial Park property offers the highest return at 9.1% annually. The Downtown Plaza has strong appreciation potential at 8.2% ROI with premium location benefits. Would you like me to break down the cash flow projections?`;
     }
     
-    if (lowerMessage.includes('size') || lowerMessage.includes('m2') || lowerMessage.includes('space')) {
-      return `For space requirements, I can see you prefer at least ${customerPreferences.minM2}m². The suburban home offers 120m² which is excellent for families, while the apartments range from 75-85m². What's your ideal space requirement?`;
+    if (lowerMessage.includes('foot traffic') || lowerMessage.includes('customers') || lowerMessage.includes('visibility')) {
+      return `For customer-facing businesses, the Retail Center on Main Street has very high foot traffic and maximum visibility. The Downtown Plaza also offers excellent exposure for professional services. What type of business are you planning?`;
     }
     
-    if (lowerMessage.includes('price') || lowerMessage.includes('budget') || lowerMessage.includes('cost')) {
-      return `Your current budget is set to $${customerPreferences.maxPrice.toLocaleString()}. The properties range from $580,000 to $750,000. The Downtown Plaza apartment offers the best value per m² at $7,733/m². Would you like me to adjust your budget range?`;
+    if (lowerMessage.includes('office') || lowerMessage.includes('professional') || lowerMessage.includes('corporate')) {
+      return `For office spaces, the Downtown Business Plaza is ideal with Class A building status, modern tech infrastructure (95% rating), and professional amenities. It offers excellent client accessibility and business prestige.`;
+    }
+    
+    if (lowerMessage.includes('warehouse') || lowerMessage.includes('industrial') || lowerMessage.includes('storage')) {
+      return `The Industrial Park offers 350m² of warehouse space with loading dock access and flexible zoning. Lower operating costs at $1,900/month and excellent logistics access make it perfect for distribution or manufacturing.`;
+    }
+    
+    if (lowerMessage.includes('cost') || lowerMessage.includes('operating') || lowerMessage.includes('expenses')) {
+      return `Operating costs vary significantly: Industrial ($1,900/mo), Downtown Office ($2,800/mo), Retail ($3,200/mo). The industrial space offers the best cost efficiency per m², while retail commands premium but generates higher revenue potential.`;
     }
     
     if (lowerMessage.includes('recommend') || lowerMessage.includes('best') || lowerMessage.includes('suggest')) {
       if (selectedProperties.length > 0) {
-        const bestMatch = selectedProperties.reduce((best, current) => 
-          current.matchScore > best.matchScore ? current : best
+        const bestROI = selectedProperties.reduce((best, current) => 
+          current.roi > best.roi ? current : best
         );
-        return `Based on your preferences, ${bestMatch.address} is your best match with a ${bestMatch.matchScore}% compatibility score. It excels in environmental features and fits your size requirements. Key selling points: ${bestMatch.sellingPoints.slice(0, 2).join(', ')}.`;
+        return `For maximum ROI, I recommend ${bestROI.address} with ${bestROI.roi}% annual return. It offers ${bestROI.m2}m² of ${bestROI.propertyType.toLowerCase()} space with ${bestROI.footTraffic.toLowerCase()} foot traffic and excellent business amenities.`;
       }
-      return `I'd be happy to make recommendations! Please select some properties from the list so I can compare them against your preferences for size, environmental impact, and value.`;
+      return `I'd recommend selecting properties to compare. Consider your business type: retail needs high visibility, offices need professional image, warehouses need operational efficiency. What's your primary business focus?`;
     }
     
-    return `That's interesting! Based on your preferences for ${customerPreferences.propertyType}s with environmental focus, I can help you analyze the properties. Selected properties: ${selectedProperties.length}. Would you like me to compare their environmental benefits, space efficiency, or provide selling advice?`;
+    return `That's a great question about commercial properties! I can analyze ROI potential, operational costs, location benefits, and growth opportunities. Current selection: ${selectedProperties.length} properties. What specific business requirements should we focus on?`;
   };
 
   const handleSendMessage = async () => {
@@ -105,7 +113,7 @@ export const AIChat = ({ customerPreferences, selectedProperties, onPreferencesU
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2">
           <Bot className="w-5 h-5 text-primary" />
-          Property AI Assistant
+          Commercial Property AI
         </CardTitle>
       </CardHeader>
       
@@ -164,7 +172,7 @@ export const AIChat = ({ customerPreferences, selectedProperties, onPreferencesU
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask about properties, comparisons, or get selling advice..."
+            placeholder="Ask about ROI, location benefits, operating costs, or business suitability..."
             className="flex-1"
           />
           <Button onClick={handleSendMessage} size="icon">

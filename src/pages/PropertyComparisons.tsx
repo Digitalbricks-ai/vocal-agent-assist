@@ -6,61 +6,85 @@ import { PropertyComparisonCard } from "@/components/comparisons/PropertyCompari
 const mockProperties = [
   {
     id: "1",
-    address: "123 Ocean View Drive, Unit 12A",
-    price: 650000,
-    m2: 85,
-    bedrooms: 2,
-    bathrooms: 2,
-    environmentalScore: 92,
-    energyRating: "A+",
-    carbonFootprint: "Low",
-    sustainableFeatures: ["Solar panels", "Smart thermostat", "LED lighting", "Water-efficient fixtures"],
-    matchScore: 95,
-    sellingPoints: [
-      "Perfect size for young professionals",
-      "Excellent environmental credentials",
-      "Prime location with ocean views",
-      "Modern energy-efficient systems"
+    address: "Downtown Business Plaza, Suite 301",
+    price: 850000,
+    monthlyRent: 12500,
+    m2: 200,
+    propertyType: "Office Space",
+    buildingClass: "Class A",
+    yearBuilt: 2018,
+    roi: 8.2,
+    footTraffic: "High",
+    parkingSpaces: 15,
+    techInfrastructure: 95,
+    operatingCosts: 2800,
+    zoning: "Commercial",
+    leaseTerm: "5-10 years",
+    visibility: "High",
+    matchScore: 94,
+    businessFeatures: ["High-speed fiber", "Conference rooms", "Reception area", "Elevator access", "24/7 security"],
+    locationBenefits: [
+      "Prime downtown location with excellent visibility",
+      "Walking distance to financial district",
+      "Strong foot traffic and client accessibility",
+      "Modern building with professional amenities",
+      "Flexible lease terms for growing businesses"
     ],
     image: "/placeholder.svg"
   },
   {
     id: "2",
-    address: "456 Downtown Plaza, Apartment 8B",
-    price: 580000,
-    m2: 75,
-    bedrooms: 2,
-    bathrooms: 1,
-    environmentalScore: 78,
-    energyRating: "B+",
-    carbonFootprint: "Medium",
-    sustainableFeatures: ["Double glazing", "Insulation upgrade", "Recycling facilities"],
-    matchScore: 82,
-    sellingPoints: [
-      "Great urban location",
-      "Good value for money",
-      "Close to public transport",
-      "Building amenities included"
+    address: "Industrial Park West, Unit 12B",
+    price: 620000,
+    monthlyRent: 8200,
+    m2: 350,
+    propertyType: "Warehouse/Industrial",
+    buildingClass: "Class B",
+    yearBuilt: 2015,
+    roi: 9.1,
+    footTraffic: "Medium",
+    parkingSpaces: 25,
+    techInfrastructure: 78,
+    operatingCosts: 1900,
+    zoning: "Industrial",
+    leaseTerm: "3-15 years",
+    visibility: "Medium",
+    matchScore: 87,
+    businessFeatures: ["Loading dock", "High ceilings", "Industrial power", "Storage capacity", "Truck access"],
+    locationBenefits: [
+      "Large space ideal for manufacturing/storage",
+      "Excellent logistics and shipping access",
+      "Lower operating costs than downtown",
+      "Scalable space for business growth",
+      "Industrial zoning allows flexible operations"
     ],
     image: "/placeholder.svg"
   },
   {
     id: "3",
-    address: "789 Suburban Lane, Single Family Home",
+    address: "Retail Center Main Street, Unit 5A",
     price: 750000,
-    m2: 120,
-    bedrooms: 3,
-    bathrooms: 2,
-    environmentalScore: 88,
-    energyRating: "A",
-    carbonFootprint: "Low",
-    sustainableFeatures: ["Solar panels", "Rainwater harvesting", "Native landscaping", "Smart home system"],
-    matchScore: 88,
-    sellingPoints: [
-      "Spacious family home",
-      "Large outdoor space",
-      "Excellent schools nearby",
-      "Strong environmental features"
+    monthlyRent: 11000,
+    m2: 180,
+    propertyType: "Retail Space",
+    buildingClass: "Class A",
+    yearBuilt: 2020,
+    roi: 7.8,
+    footTraffic: "Very High",
+    parkingSpaces: 30,
+    techInfrastructure: 88,
+    operatingCosts: 3200,
+    zoning: "Commercial Retail",
+    leaseTerm: "5-10 years",
+    visibility: "Very High",
+    matchScore: 91,
+    businessFeatures: ["Street-level access", "Large windows", "HVAC system", "Point-of-sale ready", "Signage rights"],
+    locationBenefits: [
+      "Prime retail location with maximum visibility",
+      "High customer foot traffic throughout day",
+      "Ample customer parking available",
+      "Modern retail-ready infrastructure",
+      "Strong potential for brand exposure"
     ],
     image: "/placeholder.svg"
   }
@@ -69,10 +93,12 @@ const mockProperties = [
 export const PropertyComparisons = () => {
   const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
   const [customerPreferences, setCustomerPreferences] = useState({
-    maxPrice: 700000,
-    minM2: 80,
-    prioritizeEnvironmental: true,
-    propertyType: "apartment"
+    maxPrice: 800000,
+    minM2: 150,
+    preferredPropertyType: "office",
+    minROI: 7.0,
+    requiresParking: true,
+    prioritizeFootTraffic: true
   });
 
   const togglePropertySelection = (propertyId: string) => {
@@ -88,8 +114,8 @@ export const PropertyComparisons = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Property Comparisons</h1>
-        <p className="text-muted-foreground">AI-powered property analysis and recommendations</p>
+        <h1 className="text-3xl font-bold text-foreground">Commercial Property Comparisons</h1>
+        <p className="text-muted-foreground">AI-powered commercial property analysis and ROI recommendations</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -114,7 +140,7 @@ export const PropertyComparisons = () => {
 
           {/* Property Cards */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground">Available Properties</h2>
+            <h2 className="text-xl font-semibold text-foreground">Available Commercial Properties</h2>
             <div className="grid grid-cols-1 gap-4">
               {mockProperties.map((property) => (
                 <PropertyComparisonCard

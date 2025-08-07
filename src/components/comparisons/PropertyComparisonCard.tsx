@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Home, Leaf, Zap, DollarSign, Bed, Bath, CheckCircle } from "lucide-react";
+import { Home, TrendingUp, Car, DollarSign, Building2, MapPin, CheckCircle, Zap } from "lucide-react";
 
 interface PropertyComparisonCardProps {
   property: any;
@@ -21,7 +21,10 @@ export const PropertyComparisonCard = ({
   const meetsPreferences = {
     price: property.price <= customerPreferences.maxPrice,
     size: property.m2 >= customerPreferences.minM2,
-    environmental: customerPreferences.prioritizeEnvironmental ? property.environmentalScore > 80 : true
+    roi: property.roi >= customerPreferences.minROI,
+    parking: !customerPreferences.requiresParking || property.parkingSpaces > 0,
+    footTraffic: !customerPreferences.prioritizeFootTraffic || 
+                 property.footTraffic === 'High' || property.footTraffic === 'Very High'
   };
 
   const overallFit = Object.values(meetsPreferences).every(Boolean);
@@ -41,7 +44,11 @@ export const PropertyComparisonCard = ({
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="font-semibold text-lg">{property.address}</h3>
-                <p className="text-2xl font-bold text-primary">${property.price.toLocaleString()}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-2xl font-bold text-primary">${property.price.toLocaleString()}</p>
+                  <Badge variant="outline" className="text-xs">{property.propertyType}</Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">Monthly Rent: ${property.monthlyRent.toLocaleString()}</p>
               </div>
               <div className="text-right">
                 <Badge variant={overallFit ? "default" : "secondary"}>
@@ -59,7 +66,7 @@ export const PropertyComparisonCard = ({
             {/* Key Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center gap-2">
-                <Home className="w-4 h-4 text-muted-foreground" />
+                <Building2 className="w-4 h-4 text-muted-foreground" />
                 <div>
                   <p className="text-xs text-muted-foreground">Size</p>
                   <p className="font-semibold">{property.m2}m²</p>
@@ -67,54 +74,57 @@ export const PropertyComparisonCard = ({
               </div>
               
               <div className="flex items-center gap-2">
-                <Bed className="w-4 h-4 text-muted-foreground" />
+                <TrendingUp className="w-4 h-4 text-green-500" />
                 <div>
-                  <p className="text-xs text-muted-foreground">Bedrooms</p>
-                  <p className="font-semibold">{property.bedrooms}</p>
+                  <p className="text-xs text-muted-foreground">ROI</p>
+                  <p className="font-semibold text-green-600">{property.roi}%</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">
-                <Bath className="w-4 h-4 text-muted-foreground" />
+                <Car className="w-4 h-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-muted-foreground">Bathrooms</p>
-                  <p className="font-semibold">{property.bathrooms}</p>
+                  <p className="text-xs text-muted-foreground">Parking</p>
+                  <p className="font-semibold">{property.parkingSpaces} spaces</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-2">
-                <DollarSign className="w-4 h-4 text-muted-foreground" />
+                <MapPin className="w-4 h-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-muted-foreground">Per m²</p>
-                  <p className="font-semibold">${Math.round(property.price / property.m2).toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">Foot Traffic</p>
+                  <p className="font-semibold">{property.footTraffic}</p>
                 </div>
               </div>
             </div>
 
-            {/* Environmental Score */}
+            {/* Business Metrics */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Leaf className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium">Environmental Score</span>
+                  <Zap className="w-4 h-4 text-blue-500" />
+                  <span className="text-sm font-medium">Tech Infrastructure</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline">{property.energyRating}</Badge>
-                  <span className="text-sm font-semibold">{property.environmentalScore}%</span>
+                  <Badge variant="outline">{property.buildingClass}</Badge>
+                  <span className="text-sm font-semibold">{property.techInfrastructure}%</span>
                 </div>
               </div>
-              <Progress value={property.environmentalScore} className="h-2" />
-              <p className="text-xs text-muted-foreground">Carbon Footprint: {property.carbonFootprint}</p>
+              <Progress value={property.techInfrastructure} className="h-2" />
+              <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
+                <p>Operating Costs: ${property.operatingCosts}/mo</p>
+                <p>Lease Term: {property.leaseTerm}</p>
+              </div>
             </div>
 
-            {/* Sustainable Features */}
+            {/* Business Features */}
             <div>
               <p className="text-sm font-medium mb-2 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-blue-500" />
-                Sustainable Features
+                <Building2 className="w-4 h-4 text-primary" />
+                Business Features
               </p>
               <div className="flex flex-wrap gap-1">
-                {property.sustainableFeatures.map((feature: string, index: number) => (
+                {property.businessFeatures.map((feature: string, index: number) => (
                   <Badge key={index} variant="outline" className="text-xs">
                     {feature}
                   </Badge>
@@ -122,32 +132,40 @@ export const PropertyComparisonCard = ({
               </div>
             </div>
 
-            {/* Selling Points */}
+            {/* Location Benefits */}
             <div>
-              <p className="text-sm font-medium mb-2">Key Selling Points</p>
+              <p className="text-sm font-medium mb-2">Key Business Benefits</p>
               <ul className="text-sm space-y-1">
-                {property.sellingPoints.slice(0, 3).map((point: string, index: number) => (
+                {property.locationBenefits.slice(0, 3).map((benefit: string, index: number) => (
                   <li key={index} className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    {point}
+                    {benefit}
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Preference Matching */}
-            <div className="grid grid-cols-3 gap-2 pt-2 border-t">
+            {/* Business Suitability */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2 pt-2 border-t">
               <div className={`text-center p-2 rounded ${meetsPreferences.price ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                 <p className="text-xs">Price</p>
                 <p className="font-semibold">{meetsPreferences.price ? 'Within Budget' : 'Over Budget'}</p>
               </div>
               <div className={`text-center p-2 rounded ${meetsPreferences.size ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                 <p className="text-xs">Size</p>
-                <p className="font-semibold">{meetsPreferences.size ? 'Meets Requirement' : 'Too Small'}</p>
+                <p className="font-semibold">{meetsPreferences.size ? 'Adequate' : 'Too Small'}</p>
               </div>
-              <div className={`text-center p-2 rounded ${meetsPreferences.environmental ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
-                <p className="text-xs">Environmental</p>
-                <p className="font-semibold">{meetsPreferences.environmental ? 'Excellent' : 'Good'}</p>
+              <div className={`text-center p-2 rounded ${meetsPreferences.roi ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
+                <p className="text-xs">ROI</p>
+                <p className="font-semibold">{meetsPreferences.roi ? 'Meets Target' : 'Below Target'}</p>
+              </div>
+              <div className={`text-center p-2 rounded ${meetsPreferences.parking ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                <p className="text-xs">Parking</p>
+                <p className="font-semibold">{meetsPreferences.parking ? 'Available' : 'Limited'}</p>
+              </div>
+              <div className={`text-center p-2 rounded ${meetsPreferences.footTraffic ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
+                <p className="text-xs">Traffic</p>
+                <p className="font-semibold">{meetsPreferences.footTraffic ? 'High' : 'Moderate'}</p>
               </div>
             </div>
           </div>
