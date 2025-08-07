@@ -7,6 +7,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Dashboard } from "./pages/Dashboard";
 import { Recording } from "./pages/Recording";
 import { Reports } from "./pages/Reports";
+import { PropertyComparisons } from "./pages/PropertyComparisons";
 import { Tasks } from "./pages/Tasks";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/recording" element={<Recording />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/comparisons" element={<PropertyComparisons />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
