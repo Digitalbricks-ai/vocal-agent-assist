@@ -12,6 +12,7 @@ import { CompetitorAnalysis } from "./pages/CompetitorAnalysis";
 import { Tasks } from "./pages/Tasks";
 import { Settings } from "./pages/Settings";
 import { LeadGeneration } from "./pages/LeadGeneration";
+import { Documents } from "./pages/Documents";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/comparisons" element={<PropertyComparisons />} />
             <Route path="/competitor-analysis" element={<CompetitorAnalysis />} />
             <Route path="/tasks" element={<Tasks />} />
+            <Route path="/documents" element={<Documents />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/lead-generation" element={<LeadGeneration />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
