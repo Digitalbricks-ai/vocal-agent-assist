@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentTypeSelector } from "@/components/documents/DocumentTypeSelector";
 import { RentalAgreementForm } from "@/components/documents/RentalAgreementForm";
 import { ChatInterface } from "@/components/documents/ChatInterface";
-import { FileText, HandshakeIcon, ScrollText } from "lucide-react";
+import { FileText, HandshakeIcon, ScrollText, Search } from "lucide-react";
 
-export type DocumentType = "rental" | "sales" | "services" | null;
+export type DocumentType = "rental" | "sales" | "services" | "browse" | null;
 
 export const Documents = () => {
   const [selectedType, setSelectedType] = useState<DocumentType>(null);
@@ -32,6 +32,13 @@ export const Documents = () => {
       description: "Maak contractvoorwaarden voor het verlenen van diensten",
       icon: ScrollText,
       color: "text-success"
+    },
+    {
+      id: "browse" as const,
+      title: "Bladeren",
+      description: "Zoek en bekijk bestaande documenten en contracten",
+      icon: Search,
+      color: "text-warning"
     }
   ];
 
@@ -102,6 +109,11 @@ export const Documents = () => {
                     {selectedType === "services" && (
                       <div className="text-muted-foreground">
                         Dienstverleningscontract formulier komt binnenkort beschikbaar.
+                      </div>
+                    )}
+                    {selectedType === "browse" && (
+                      <div className="text-muted-foreground">
+                        Document zoekfunctie komt binnenkort beschikbaar.
                       </div>
                     )}
                   </CardContent>

@@ -13,7 +13,7 @@ interface ChatMessage {
 }
 
 interface ChatInterfaceProps {
-  documentType: "rental" | "sales" | "services";
+  documentType: "rental" | "sales" | "services" | "browse";
   formData: any;
 }
 
@@ -22,11 +22,12 @@ export const ChatInterface = ({ documentType, formData }: ChatInterfaceProps) =>
     {
       id: "1",
       type: "robin",
-      content: `Hallo! Ik ben Robin en ik help je bij het opstellen van je ${
-        documentType === "rental" ? "huurovereenkomst" : 
-        documentType === "sales" ? "koopovereenkomst" : 
-        "dienstverleningscontract"
-      }. Vul het formulier in en stel me gerust vragen als je hulp nodig hebt!`,
+      content: `Hallo! Ik ben Robin en ik help je bij het ${
+        documentType === "rental" ? "opstellen van je huurovereenkomst" : 
+        documentType === "sales" ? "opstellen van je koopovereenkomst" : 
+        documentType === "services" ? "opstellen van je dienstverleningscontract" :
+        "zoeken door bestaande documenten"
+      }. ${documentType === "browse" ? "Stel me gerust vragen over welke documenten je zoekt!" : "Vul het formulier in en stel me gerust vragen als je hulp nodig hebt!"}`,
       timestamp: new Date()
     }
   ]);

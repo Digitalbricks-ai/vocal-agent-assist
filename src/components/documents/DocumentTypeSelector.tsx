@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
 
 interface DocumentType {
-  id: "rental" | "sales" | "services";
+  id: "rental" | "sales" | "services" | "browse";
   title: string;
   description: string;
   icon: LucideIcon;
@@ -12,7 +12,7 @@ interface DocumentType {
 
 interface DocumentTypeSelectorProps {
   documentTypes: DocumentType[];
-  onSelectType: (type: "rental" | "sales" | "services") => void;
+  onSelectType: (type: "rental" | "sales" | "services" | "browse") => void;
 }
 
 export const DocumentTypeSelector = ({ documentTypes, onSelectType }: DocumentTypeSelectorProps) => {
@@ -27,7 +27,7 @@ export const DocumentTypeSelector = ({ documentTypes, onSelectType }: DocumentTy
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
         {documentTypes.map((type) => {
           const Icon = type.icon;
           return (
