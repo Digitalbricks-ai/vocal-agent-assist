@@ -18,6 +18,9 @@ interface Contract {
   indexationDate: string;
   lastIndexation: string;
   status: "active" | "expiring" | "expired";
+  suggestedIndexation: number;
+  regionalAverageRent: number;
+  nextIndexationDate: string;
 }
 
 const mockContracts: Contract[] = [
@@ -33,7 +36,10 @@ const mockContracts: Contract[] = [
     monthlyRent: 2500,
     indexationDate: "2025-01-15",
     lastIndexation: "2024-01-15",
-    status: "active"
+    status: "active",
+    suggestedIndexation: 2625,
+    regionalAverageRent: 2800,
+    nextIndexationDate: "2026-01-15"
   },
   {
     id: "2",
@@ -47,7 +53,10 @@ const mockContracts: Contract[] = [
     monthlyRent: 3200,
     indexationDate: "2025-03-01",
     lastIndexation: "2024-03-01",
-    status: "expiring"
+    status: "expiring",
+    suggestedIndexation: 3360,
+    regionalAverageRent: 3500,
+    nextIndexationDate: "2026-03-01"
   },
   {
     id: "3",
@@ -61,7 +70,10 @@ const mockContracts: Contract[] = [
     monthlyRent: 1800,
     indexationDate: "2024-06-01",
     lastIndexation: "2023-06-01",
-    status: "expired"
+    status: "expired",
+    suggestedIndexation: 1890,
+    regionalAverageRent: 2100,
+    nextIndexationDate: "2025-06-01"
   },
   {
     id: "4",
@@ -75,7 +87,10 @@ const mockContracts: Contract[] = [
     monthlyRent: 2100,
     indexationDate: "2025-09-01",
     lastIndexation: "2024-09-01",
-    status: "expiring"
+    status: "expiring",
+    suggestedIndexation: 2205,
+    regionalAverageRent: 2300,
+    nextIndexationDate: "2026-09-01"
   },
   {
     id: "5",
@@ -89,7 +104,10 @@ const mockContracts: Contract[] = [
     monthlyRent: 4500,
     indexationDate: "2025-11-01",
     lastIndexation: "2024-11-01",
-    status: "active"
+    status: "active",
+    suggestedIndexation: 4725,
+    regionalAverageRent: 4900,
+    nextIndexationDate: "2026-11-01"
   },
   {
     id: "6",
@@ -103,7 +121,10 @@ const mockContracts: Contract[] = [
     monthlyRent: 2800,
     indexationDate: "2026-02-15",
     lastIndexation: "2024-02-15",
-    status: "active"
+    status: "active",
+    suggestedIndexation: 2940,
+    regionalAverageRent: 2800,
+    nextIndexationDate: "2027-02-15"
   }
 ];
 

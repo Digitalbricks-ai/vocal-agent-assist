@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, TrendingUp, User, Building2 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Calendar, MapPin, TrendingUp, User, Building2, ArrowUpCircle } from "lucide-react";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { nl } from "date-fns/locale";
 
@@ -18,6 +19,9 @@ interface Contract {
   indexationDate: string;
   lastIndexation: string;
   status: "active" | "expiring" | "expired";
+  suggestedIndexation: number;
+  regionalAverageRent: number;
+  nextIndexationDate: string;
 }
 
 interface ContractCardProps {
@@ -26,7 +30,12 @@ interface ContractCardProps {
 
 export const ContractCard = ({ contract }: ContractCardProps) => {
   const endDate = parseISO(contract.endDate);
+  const nextIndexation = parseISO(contract.nextIndexationDate);
   const daysUntilExpiry = differenceInDays(endDate, new Date());
+  const daysUntilIndexation = differenceInDays(nextIndexation, new Date());
+  const indexationIncrease = contract.suggestedIndexation - contract.monthlyRent;
+  const indexationPercentage = ((indexationIncrease / contract.monthlyRent) * 100).toFixed(1);
+  const comparisonToAverage = ((contract.monthlyRent / contract.regionalAverageRent) * 100).toFixed(0);
   
   const statusConfig = {
     active: { label: "Actief", variant: "default" as const, className: "bg-success/10 text-success hover:bg-success/20" },
@@ -99,10 +108,46 @@ export const ContractCard = ({ contract }: ContractCardProps) => {
           
           <div className="flex items-center gap-2 text-sm">
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium">Indexatie:</span>
+            <span className="font-medium">Volgende indexatie:</span>
             <span className="text-muted-foreground">
-              {format(parseISO(contract.indexationDate), "dd MMM yyyy", { locale: nl })}
+              {format(nextIndexation, "dd MMM yyyy", { locale: nl })}
             </span>
+          </div>
+
+          {daysUntilIndexation > 0 && daysUntilIndexation <= 180 && (
+            <div className="text-sm text-primary font-medium">
+              Indexatie mogelijk over {daysUntilIndexation} dagen
+            </div>
+          )}
+        </div>
+
+        <Separator />
+
+        <div className="space-y-2">
+          <div className="flex items-start gap-2">
+            <ArrowUpCircle className="h-4 w-4 text-success mt-0.5" />
+            <div className="flex-1">
+              <div className="text-sm font-medium">Voorgestelde indexatie</div>
+              <div className="text-lg font-bold text-success">
+                €{contract.suggestedIndexation.toLocaleString("nl-NL")}/mnd
+              </div>
+              <div className="text-xs text-muted-foreground">
+                +€{indexationIncrease.toLocaleString("nl-NL")} ({indexationPercentage}% stijging)
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-muted/50 rounded-md p-2 text-xs space-y-1">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Regionaal gemiddelde:</span>
+              <span className="font-medium">€{contract.regionalAverageRent.toLocaleString("nl-NL")}/mnd</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Huidige huur vs. gemiddelde:</span>
+              <span className={Number(comparisonToAverage) < 100 ? "text-success font-medium" : "text-warning font-medium"}>
+                {comparisonToAverage}% van gemiddelde
+              </span>
+            </div>
           </div>
         </div>
 
