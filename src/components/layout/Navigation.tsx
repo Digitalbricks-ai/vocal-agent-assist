@@ -1,4 +1,4 @@
-import { Home, Mic, FileText, CheckSquare, Settings, BarChart3, Search, UserPlus, ScrollText } from "lucide-react";
+import { Home, Mic, FileText, CheckSquare, Settings, BarChart3, Search, UserPlus, ScrollText, FileStack } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +10,7 @@ const navigationItems = [
   { href: "/competitor-analysis", label: "Competitor Analysis", icon: Search },
   { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/documents", label: "Documenten", icon: ScrollText },
+  { href: "/contracts", label: "Contracten", icon: FileStack },
   { href: "/lead-generation", label: "Lead Generation", icon: UserPlus },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
