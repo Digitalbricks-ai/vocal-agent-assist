@@ -1,10 +1,15 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, MapPin, TrendingUp, User, Building2, ArrowUpCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Calendar, MapPin, TrendingUp, User, Building2, ArrowUpCircle, CalendarClock } from "lucide-react";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { nl } from "date-fns/locale";
+import { toast } from "sonner";
 
 interface Contract {
   id: string;
@@ -22,6 +27,10 @@ interface Contract {
   suggestedIndexation: number;
   regionalAverageRent: number;
   nextIndexationDate: string;
+  scheduledIndexation?: {
+    date: string;
+    amount: number;
+  };
 }
 
 interface ContractCardProps {
@@ -29,6 +38,9 @@ interface ContractCardProps {
 }
 
 export const ContractCard = ({ contract }: ContractCardProps) => {
+  const [open, setOpen] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState(contract.nextIndexationDate);
+  const [scheduledAmount, setScheduledAmount] = useState(contract.suggestedIndexation.toString());
   const endDate = parseISO(contract.endDate);
   const nextIndexation = parseISO(contract.nextIndexationDate);
   const daysUntilExpiry = differenceInDays(endDate, new Date());
@@ -36,6 +48,13 @@ export const ContractCard = ({ contract }: ContractCardProps) => {
   const indexationIncrease = contract.suggestedIndexation - contract.monthlyRent;
   const indexationPercentage = ((indexationIncrease / contract.monthlyRent) * 100).toFixed(1);
   const comparisonToAverage = ((contract.monthlyRent / contract.regionalAverageRent) * 100).toFixed(0);
+
+  const handleScheduleIndexation = () => {
+    toast.success("Indexatie ingepland", {
+      description: `€${scheduledAmount} gepland voor ${new Date(scheduledDate).toLocaleDateString('nl-NL')}`
+    });
+    setOpen(false);
+  };
   
   const statusConfig = {
     active: { label: "Actief", variant: "default" as const, className: "bg-success/10 text-success hover:bg-success/20" },
@@ -151,6 +170,21 @@ export const ContractCard = ({ contract }: ContractCardProps) => {
           </div>
         </div>
 
+        {contract.scheduledIndexation && (
+          <>
+            <Separator />
+            <div className="flex items-start gap-2">
+              <CalendarClock className="h-4 w-4 text-success mt-0.5" />
+              <div className="flex-1">
+                <div className="font-medium text-sm">Ingepland</div>
+                <div className="text-sm">
+                  €{contract.scheduledIndexation.amount} op {new Date(contract.scheduledIndexation.date).toLocaleDateString('nl-NL')}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
         <div className="pt-2 border-t">
           <p className="text-xs text-muted-foreground">
             Laatste indexatie: {format(parseISO(contract.lastIndexation), "dd MMM yyyy", { locale: nl })}
@@ -158,13 +192,63 @@ export const ContractCard = ({ contract }: ContractCardProps) => {
         </div>
       </CardContent>
 
-      <CardFooter className="flex gap-2">
-        <Button variant="outline" className="flex-1" size="sm">
-          Details
-        </Button>
-        <Button variant="default" className="flex-1" size="sm">
-          Beheren
-        </Button>
+      <CardFooter className="flex flex-col gap-2">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button className="w-full" variant="outline" size="sm">
+              <CalendarClock className="h-4 w-4 mr-2" />
+              Indexatie Inplannen
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Indexatie Inplannen</DialogTitle>
+              <DialogDescription>
+                Plan de volgende indexatie voor {contract.propertyAddress}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="date">Indexatiedatum</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={scheduledDate}
+                  onChange={(e) => setScheduledDate(e.target.value)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="amount">Nieuw Huurbedrag (€)</Label>
+                <Input
+                  id="amount"
+                  type="number"
+                  value={scheduledAmount}
+                  onChange={(e) => setScheduledAmount(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Huidige huur: €{contract.monthlyRent} | Voorgesteld: €{contract.suggestedIndexation}
+                </p>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpen(false)}>
+                Annuleren
+              </Button>
+              <Button onClick={handleScheduleIndexation}>
+                Inplannen
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        
+        <div className="flex gap-2 w-full">
+          <Button variant="outline" className="flex-1" size="sm">
+            Details
+          </Button>
+          <Button variant="default" className="flex-1" size="sm">
+            Beheren
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

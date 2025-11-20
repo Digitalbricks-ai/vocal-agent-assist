@@ -21,6 +21,10 @@ interface Contract {
   suggestedIndexation: number;
   regionalAverageRent: number;
   nextIndexationDate: string;
+  scheduledIndexation?: {
+    date: string;
+    amount: number;
+  };
 }
 
 const mockContracts: Contract[] = [
