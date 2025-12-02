@@ -14,6 +14,7 @@ import { Settings } from "./pages/Settings";
 import { LeadGeneration } from "./pages/LeadGeneration";
 import { Documents } from "./pages/Documents";
 import { Contracts } from "./pages/Contracts";
+import { Personalization } from "./pages/Personalization";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/documents" element={<Documents />} />
             <Route path="/contracts" element={<Contracts />} />
+            <Route path="/personalization" element={<Personalization />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/lead-generation" element={<LeadGeneration />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
